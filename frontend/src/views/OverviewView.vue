@@ -17,6 +17,9 @@ import ActivityFeed from '@/components/ActivityFeed.vue'
 import TodoList from '@/components/TodoList.vue'
 import MiniCalendar from '@/components/MiniCalendar.vue'
 import BirthdaysPanel from '@/components/BirthdaysPanel.vue'
+import { useTodos } from '@/composables/useTodos'
+
+const { dueNow, upcoming, items: todoItems } = useTodos()
 
 const auth = useAuthStore()
 const year = new Date().getFullYear()
@@ -125,7 +128,17 @@ const holidayRanges = computed(() =>
 
 // Leave first so a leave day still reads as leave if it ever overlaps a holiday
 // (markFor returns the first matching range).
-const calendarRanges = computed(() => [...leaveRanges.value, ...holidayRanges.value])
+const calendarRanges = computed(() => {
+  const taskRanges = (todoItems.value ?? [])
+    .filter((t) => t.due && !t.done)
+    .map((t) => {
+      const day = new Date(t.due)
+      const iso = `${day.getFullYear()}-${String(day.getMonth() + 1).padStart(2, '0')}-${String(day.getDate()).padStart(2, '0')}`
+      return { from: iso, to: iso, tone: 'task', label: `Task: ${t.text}` }
+    })
+
+  return [...leaveRanges.value, ...holidayRanges.value, ...taskRanges]
+})
 </script>
 
 <template>
@@ -138,6 +151,17 @@ const calendarRanges = computed(() => [...leaveRanges.value, ...holidayRanges.va
         leave are unavailable. Your HR administrator can link it.
       </p>
     </header>
+
+    <!-- Task reminder: tasks with a due date that are now due or overdue. -->
+    <div v-if="dueNow.length" class="reminder">
+      <span class="reminder-chip"><AppIcon name="clock" :size="16" /></span>
+      <div class="reminder-body">
+        <p class="reminder-title">
+          {{ dueNow.length }} task{{ dueNow.length > 1 ? 's' : '' }} due
+        </p>
+        <p class="reminder-list">{{ dueNow.map((t) => t.text).join(' · ') }}</p>
+      </div>
+    </div>
 
     <!-- KPI tiles -->
     <div v-if="auth.hasEmployeeRecord || auth.isApprover" class="stat-grid">
@@ -317,6 +341,42 @@ const calendarRanges = computed(() => [...leaveRanges.value, ...holidayRanges.va
 </template>
 
 <style scoped>
+.reminder {
+  display: flex;
+  gap: var(--s3);
+  align-items: center;
+  padding: var(--s3) var(--s4);
+  background: var(--amber-wash);
+  border: 1px solid var(--amber-line, #f0d9a8);
+  border-radius: var(--radius);
+}
+
+.reminder-chip {
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  color: var(--amber);
+}
+
+.reminder-title {
+  font-weight: 600;
+  font-size: var(--step-0);
+  color: var(--amber);
+}
+
+.reminder-list {
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 60ch;
+}
+
 .dash-cols {
   display: grid;
   grid-template-columns: 1.4fr 1fr;

@@ -65,6 +65,23 @@ final class AttendanceReviewController
             note: $validated['note'] ?? null,
         ));
 
+        // In-app notification for the sheet's owner.
+        $owner = $employees->find(
+            \HR\Employee\Domain\ValueObject\EmployeeId::fromString($sheet->employeeId()),
+        );
+        if ($owner !== null) {
+            $approved = $validated['decision'] === 'approve';
+            \App\Support\Notifier::push(
+                userId: $owner->userId(),
+                type: $approved ? 'attendance.approved' : 'attendance.returned',
+                title: $approved ? 'Attendance approved' : 'Attendance returned',
+                body: $sheet->period()->label()
+                    .($approved ? ' was approved.' : ' was returned for changes.')
+                    .(! $approved && ($validated['note'] ?? null) ? ' — '.$validated['note'] : ''),
+                actionUrl: '/attendance',
+            );
+        }
+
         return (new AttendanceSheetResource($sheet))->response();
     }
 }

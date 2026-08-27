@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import BrandMark from '@/components/BrandMark.vue'
 import AppIcon from '@/components/AppIcon.vue'
+import NotificationBell from '@/components/NotificationBell.vue'
 
 const auth = useAuthStore()
 const router = useRouter()
@@ -53,6 +54,7 @@ async function signOut() {
       <div class="sidebar-brand">
         <BrandMark :size="18" />
         <span class="brand-name">Payroll Portal</span>
+        <NotificationBell class="brand-bell" />
       </div>
 
       <nav class="nav" aria-label="Main">
@@ -133,6 +135,10 @@ async function signOut() {
   gap: 0.6rem;
   padding: var(--s5);
   border-bottom: 1px solid var(--rule);
+}
+
+.brand-bell {
+  margin-left: auto;
 }
 
 .brand-name {
