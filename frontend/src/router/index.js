@@ -121,7 +121,7 @@ router.beforeEach(async (to) => {
 })
 
 router.afterEach((to) => {
-  document.title = to.meta.title ? `${to.meta.title} · Payroll Portal` : 'Payroll Portal'
+  document.title = to.meta.title ? `${to.meta.title} · eSync Workspace` : 'eSync Workspace'
 })
 
 export default router

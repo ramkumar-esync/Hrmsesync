@@ -1,7 +1,7 @@
 {
     "name": "acme/payroll-portal",
     "type": "project",
-    "description": "Payroll Portal — payroll, payslips and leave management. Laravel 13 with a Domain-Driven Design layout.",
+    "description": "eSync Workspace — payroll, payslips and leave management. Laravel 13 with a Domain-Driven Design layout.",
     "license": "proprietary",
     "require": {
         "php": "^8.3",

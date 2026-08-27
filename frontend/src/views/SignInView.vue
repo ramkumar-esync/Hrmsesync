@@ -33,7 +33,7 @@ async function submit() {
     <aside class="pitch">
       <div class="pitch-inner">
         <BrandMark :size="54" light class="brand-logo" />
-        <h1 class="pitch-title">Payroll Portal</h1>
+        <h1 class="pitch-title">eSync Workspace</h1>
         <p class="pitch-copy">
           Your payslips, your leave balance, and where every request has got to —
           in one place.

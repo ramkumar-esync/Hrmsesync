@@ -1,4 +1,4 @@
-APP_NAME="Payroll Portal"
+APP_NAME="eSync Workspace"
 APP_ENV=local
 APP_KEY=base64:YGY5gFNEM74BO3k5lifizaLU10aafzCHtHswI4mZr7k=
 APP_DEBUG=true

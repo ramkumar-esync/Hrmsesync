@@ -1,4 +1,4 @@
-# Payroll Portal
+# eSync Workspace
 
 Payroll, payslips and leave management, built on **Laravel 13 / PHP 8.3** with a
 Domain-Driven Design layout.

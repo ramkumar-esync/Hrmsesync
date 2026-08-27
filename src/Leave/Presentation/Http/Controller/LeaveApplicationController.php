@@ -122,18 +122,18 @@ final class LeaveApplicationController
 
             $dates = $range->start->format('d M Y').' – '.$range->end->format('d M Y');
 
-            // Everyone with the HR admin role receives the notification.
-            $recipients = \Illuminate\Support\Facades\DB::table('users')
+            // Everyone with the HR admin role is notified — id for the in-app
+            // bell, email for the mail.
+            $hr = \Illuminate\Support\Facades\DB::table('users')
                 ->where('role', 'hr_admin')
                 ->where('is_active', true)
-                ->pluck('email')
-                ->all();
+                ->get(['id', 'email']);
 
-            if ($recipients === []) {
+            if ($hr->isEmpty()) {
                 return;
             }
 
-            \Illuminate\Support\Facades\Mail::to($recipients)->send(
+            \Illuminate\Support\Facades\Mail::to($hr->pluck('email')->all())->send(
                 new \App\Mail\LeaveAppliedMail(
                     employeeName: $employee->name()->full,
                     leaveType: $type?->name() ?? 'Leave',
@@ -143,6 +143,17 @@ final class LeaveApplicationController
                     appUrl: rtrim((string) config('app.url'), '/'),
                 ),
             );
+
+            // In-app notification for each HR admin, shown on their bell.
+            foreach ($hr as $admin) {
+                \App\Support\Notifier::push(
+                    userId: $admin->id,
+                    type: 'leave.applied',
+                    title: 'Leave request to review',
+                    body: $employee->name()->full.' — '.($type?->name() ?? 'Leave').', '.$dates,
+                    actionUrl: '/approvals',
+                );
+            }
         } catch (\Throwable $e) {
             \Illuminate\Support\Facades\Log::warning('Leave notification email could not be sent.', [
                 'application' => $application->id->value ?? null,

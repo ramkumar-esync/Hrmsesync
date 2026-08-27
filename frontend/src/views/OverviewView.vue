@@ -19,7 +19,7 @@ import MiniCalendar from '@/components/MiniCalendar.vue'
 import BirthdaysPanel from '@/components/BirthdaysPanel.vue'
 import { useTodos } from '@/composables/useTodos'
 
-const { dueNow, upcoming, items: todoItems } = useTodos()
+const { dueNow, upcoming, items: todoItems, add: addTodo } = useTodos()
 
 const auth = useAuthStore()
 const year = new Date().getFullYear()
@@ -215,8 +215,10 @@ const calendarRanges = computed(() => {
         <TodoList />
         <MiniCalendar
           v-if="auth.hasEmployeeRecord"
-          title="Leave calendar"
+          title="Calendar"
           :ranges="calendarRanges"
+          interactive
+          @add-task="addTodo"
         />
       </div>
     </div>

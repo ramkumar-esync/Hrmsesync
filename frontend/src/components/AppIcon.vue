@@ -30,6 +30,10 @@ const paths = {
   clock: 'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 6v6l4 2',
   calendarCheck: 'M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM9 16l2 2 4-4',
   search: 'M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM21 21l-4.35-4.35',
+  // Added icon paths (Lucide-style):
+  pencil: 'M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z M15 5l4 4',
+  key: 'M21 2l-2 2m-1.5 1.5L14 9l-1.5-1.5-3 3 1.5 1.5L8 15l-1.5-1.5L5 15l-3-3 7-7 3.5 3.5z M15.5 7.5a2 2 0 1 0 2.83-2.83 2 2 0 0 0-2.83 2.83z',
+  lock: 'M7 11V7a5 5 0 0 1 10 0v4 M5 11h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2z',
 }
 
 const d = computed(() => paths[props.name] ?? '')

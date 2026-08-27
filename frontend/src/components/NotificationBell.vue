@@ -139,7 +139,6 @@ const hasItems = computed(() => items.value.length > 0)
 
 .bell-panel {
   position: absolute;
-  right: 0;
   top: calc(100% + 6px);
   width: 320px;
   max-width: 88vw;

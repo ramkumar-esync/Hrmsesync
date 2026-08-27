@@ -99,6 +99,10 @@ async function changeStatus(row, event) {
 }
 
 async function resetPassword(row) {
+  if (!window.confirm(`Reset password for ${row.name}? A new temporary password will be generated.`)) {
+    return
+  }
+
   rowError.value = null
   rowBusy.value = row.id
   try {
@@ -399,8 +403,34 @@ async function submit() {
                 <th></th>
               </tr>
             </thead>
-            <tbody>
-              <tr v-for="row in rows" :key="row.id">
+            <tbody v-for="row in rows" :key="row.id">
+              <tr>
+                <td class="actions-cell">
+                  <!-- Edit button with icon and hover tooltip -->
+                  <button
+                    class="btn btn-quiet btn-icon"
+                    title="Edit employee"
+                    aria-label="Edit employee"
+                    @click="editing = row"
+                  >
+                    <AppIcon name="pencil" :size="16" />
+                  </button>
+
+                  <!-- Reset password button with icon and hover tooltip -->
+                  <button
+                    v-if="row.has_login"
+                    class="btn btn-quiet btn-icon"
+                    :disabled="rowBusy === row.id"
+                    title="Reset password"
+                    aria-label="Reset password"
+                    @click="resetPassword(row)"
+                  >
+                    <AppIcon name="key" :size="16" />
+                  </button>
+                  <span v-else class="ref" title="No portal access">
+                    <AppIcon name="lock" :size="16" />
+                  </span>
+                </td>
                 <td class="figure">{{ row.employee_number }}</td>
                 <td>
                   <div style="font-weight: 500">{{ row.name }}</div>
@@ -424,18 +454,6 @@ async function submit() {
                       {{ opt.label }}
                     </option>
                   </select>
-                </td>
-                <td style="text-align: right">
-                  <button class="btn btn-quiet btn-small" @click="editing = row">Edit</button>
-                  <button
-                    v-if="row.has_login"
-                    class="btn btn-quiet btn-small"
-                    :disabled="rowBusy === row.id"
-                    @click="resetPassword(row)"
-                  >
-                    Reset password
-                  </button>
-                  <span v-else class="ref">No login</span>
                 </td>
               </tr>
             </tbody>
@@ -517,5 +535,19 @@ async function submit() {
 
 .section-label:not(:first-child) {
   margin-top: var(--s5);
+}
+.actions-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  white-space: nowrap;
+}
+
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem;
+  border-radius: var(--radius-sm, 4px);
 }
 </style>

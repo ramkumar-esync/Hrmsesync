@@ -53,7 +53,7 @@ async function signOut() {
     <aside class="sidebar" :class="{ 'is-open': drawerOpen }">
       <div class="sidebar-brand">
         <BrandMark :size="18" />
-        <span class="brand-name">Payroll Portal</span>
+        <span class="brand-name">eSync Workspace</span>
         <NotificationBell class="brand-bell" />
       </div>
 
@@ -103,7 +103,7 @@ async function signOut() {
       </main>
 
       <footer class="foot">
-        <span class="ref">Payroll Portal</span>
+        <span class="ref">eSync Workspace</span>
         <span class="ref">Figures shown are as issued. Contact HR to query a payslip.</span>
       </footer>
     </div>
