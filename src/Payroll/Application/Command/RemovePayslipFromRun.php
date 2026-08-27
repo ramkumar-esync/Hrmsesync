@@ -1,0 +1,10 @@
+<?php
+
+declare(strict_types=1);
+
+namespace HR\Payroll\Application\Command;
+
+final readonly class RemovePayslipFromRun
+{
+    public function __construct(public string $runId, public string $payslipId) {}
+}
