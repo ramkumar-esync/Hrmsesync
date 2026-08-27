@@ -79,6 +79,11 @@ export const holidays = {
   list: (year) => client.get('/holidays', { params: { year } }).then((r) => r.data.data),
 }
 
+export const notifications = {
+  list: () => client.get('/notifications').then((r) => r.data),
+  markRead: (ids) => client.post('/notifications/read', ids ? { ids } : {}).then((r) => r.data),
+}
+
 export const payrollRuns = {
   list: (params) => client.get('/hr/payroll-runs', { params }).then((r) => r.data),
   show: (id) => client.get(`/hr/payroll-runs/${id}`).then((r) => r.data.data ?? r.data),

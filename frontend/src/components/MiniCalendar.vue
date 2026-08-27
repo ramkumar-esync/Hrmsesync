@@ -98,6 +98,7 @@ function step(delta) {
         <span class="lg"><i class="dot mark-brand"></i> Approved leave</span>
         <span class="lg"><i class="dot mark-pending"></i> Pending</span>
         <span class="lg"><i class="dot mark-holiday"></i> Holiday</span>
+        <span class="lg"><i class="dot mark-task"></i> Task</span>
       </div>
     </div>
   </section>
@@ -190,6 +191,16 @@ function step(delta) {
 
 .dot.mark-holiday {
   background: var(--red, #b3402f);
+}
+
+/* To-do tasks with a due date — a distinct violet so they don't read as leave. */
+.mark-task {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+.dot.mark-task {
+  background: #6d28d9;
 }
 
 .cal-legend {

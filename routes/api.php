@@ -7,6 +7,7 @@ use HR\Attendance\Presentation\Http\Controller\AttendanceReviewController;
 use HR\Employee\Presentation\Http\Controller\BirthdayController;
 use HR\Employee\Presentation\Http\Controller\EmployeeController;
 use HR\Identity\Presentation\Http\Controller\AuthController;
+use HR\Identity\Presentation\Http\Controller\NotificationController;
 use HR\Identity\Presentation\Http\Controller\PasswordResetController;
 use HR\Leave\Presentation\Http\Controller\LeaveApplicationController;
 use HR\Leave\Presentation\Http\Controller\LeaveApprovalController;
@@ -33,6 +34,8 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::post('auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
     Route::get('auth/me', [AuthController::class, 'me'])->name('auth.me');
     Route::get('holidays', [HolidayController::class, 'index'])->name('holidays.index');
+    Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('notifications/read', [NotificationController::class, 'markRead'])->name('notifications.read');
     Route::post('auth/change-password', [AuthController::class, 'changePassword'])->name('auth.change-password');
     /*
      |--------------------------------------------------------------------------

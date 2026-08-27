@@ -112,6 +112,18 @@ final class LeaveApprovalController
                     appUrl: rtrim((string) config('app.url'), '/'),
                 ),
             );
+
+            // In-app notification, surfaced next time the employee opens the app.
+            $approved = $application->status()->value === 'approved';
+            \App\Support\Notifier::push(
+                userId: $employee->userId(),
+                type: $approved ? 'leave.approved' : 'leave.rejected',
+                title: $approved ? 'Leave approved' : 'Leave not approved',
+                body: ($type?->name() ?? 'Leave').', '
+                    .$range->start->format('d M').' – '.$range->end->format('d M Y')
+                    .($application->decisionNote() ? ' — '.$application->decisionNote() : ''),
+                actionUrl: '/leave',
+            );
         } catch (\Throwable $e) {
             \Illuminate\Support\Facades\Log::warning('Leave decision email could not be sent.', [
                 'application' => $application->id->value ?? null,
